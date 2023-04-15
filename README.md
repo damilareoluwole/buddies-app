@@ -19,7 +19,7 @@ To sign up, change email and phone OTP, is required. I am unable to use a free e
  If you dont get otp please use 1234 as your otp. It is a special otp I added to the backend to mitigate the issue raised above.
 
  APP:
- https://github.com/damilareoluwole/buddies-flutter.git
+ https://github.com/damilareoluwole/buddies-app.git
 
  APIs:
  https://github.com/damilareoluwole/buddies-api.git
