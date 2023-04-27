@@ -14,16 +14,17 @@ import 'package:buddies/services/validator.dart';
 import 'package:buddies/settings/app_theme.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-class ChangeEnterEmailOtp extends StatefulWidget {
-  const ChangeEnterEmailOtp({super.key, required this.email});
+class ChangeEnterOtp extends StatefulWidget {
+  const ChangeEnterOtp({super.key, required this.action, required this.value});
 
-  final String email;
+  final String action;
+  final String value;
 
   @override
-  State<ChangeEnterEmailOtp> createState() => _ChangeEnterEmailOtpState();
+  State<ChangeEnterOtp> createState() => _ChangeEnterOtpState();
 }
 
-class _ChangeEnterEmailOtpState extends State<ChangeEnterEmailOtp> {
+class _ChangeEnterOtpState extends State<ChangeEnterOtp> {
   final _verifyEmailOtpFormKey = GlobalKey<FormState>();
   final otpController = TextEditingController();
   var isProcessingResend = false;
@@ -116,7 +117,7 @@ class _ChangeEnterEmailOtpState extends State<ChangeEnterEmailOtp> {
                 ),
                 WidgetSpan(
                   child: (isProcessingResend)
-                      ? const CircularProgressIndicator()
+                      ? Helper().circularProgressIndicator()
                       : TimerButton(
                           durration: 120,
                           child: InkWell(
@@ -141,7 +142,7 @@ class _ChangeEnterEmailOtpState extends State<ChangeEnterEmailOtp> {
             height: 24,
           ),
           (processing)
-              ? const CircularProgressIndicator()
+              ? Helper().circularProgressIndicator()
               : buttonWidget(
                   text: "Verify",
                   onPressed: () {
@@ -163,26 +164,32 @@ class _ChangeEnterEmailOtpState extends State<ChangeEnterEmailOtp> {
         processing = true;
       });
 
-      var emailData = {"otp": otpController.text, "email": widget.email};
+      String api;
+      Map<String, String> data;
+
+      if (widget.action == "email") {
+        api = ApiEndpoints.changeEmail;
+        data = {"otp": otpController.text, "email": widget.value};
+      } else {
+        api = ApiEndpoints.changePhone;
+        data = {"otp": otpController.text, "phone": widget.value};
+      }
 
       try {
-        var response = await ApiClient()
-            .httpPostRequest(ApiEndpoints.changeEmail, emailData);
+        var response = await ApiClient().httpPostRequest(api, data);
 
         setState(() {
           processing = false;
         });
 
-        if (response["status"] == true &&
-            response["data"] != null &&
-            response["data"]["user"] != null) {
+        if (response["status"] == true && response["data"] != null) {
           Navigator.pop(context);
           setState(() {
             user = User.fromJson(response["data"]["user"]);
           });
 
           NavigationService.instance.navigateTo(Routes.settings);
-          Helper().showSuccessfulSnackBar(response["message"]);
+          Helper().showSuccessfulSnackBar("Account updated successfully");
         } else {
           Helper().showErrorSnackBar(response["message"]);
         }

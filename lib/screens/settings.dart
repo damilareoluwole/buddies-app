@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'package:buddies/screens/auth/change/change_password.dart';
+import 'package:buddies/screens/auth/change/change_send_email_otp.dart';
+import 'package:buddies/screens/auth/change/change_send_phone_otp.dart';
+import 'package:buddies/screens/auth/change/change_verify_otp.dart';
+import 'package:buddies/services/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:buddies/models/user.dart';
-import 'package:buddies/screens/auth/changeEmail/change_email.dart';
-import 'package:buddies/screens/auth/changePhone/change_phone.dart';
 import 'package:buddies/screens/frame/app_frame.dart';
 import 'package:buddies/screens/widget/drop_down_headline.dart';
 import 'package:buddies/screens/widget/logout.dart';
@@ -18,7 +21,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-   @override
+  @override
   Widget build(BuildContext context) {
     return AppFrame(
       currentIndex: 2,
@@ -68,7 +71,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   color: AppTheme.redColor,
                   child: TextButton(
                     onPressed: () {
-                      showEmailDialog();
+                      showDialog<void>(
+                        context: Helper().getContext(),
+                        builder: (BuildContext context) {
+                          return const AlertDialog(
+                            title: Text("You are about to change your email",
+                                textAlign: TextAlign.center),
+                            content: ChangeSendEmailOtp(),
+                          );
+                        },
+                      );
                     },
                     child: Center(
                       child: Text(
@@ -118,7 +130,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   color: AppTheme.redColor,
                   child: TextButton(
                     onPressed: () {
-                      showPhoneDialog();
+                      showDialog<void>(
+                        context: Helper().getContext(),
+                        builder: (BuildContext context) {
+                          return const AlertDialog(
+                            title: Text(
+                                "You are about to change your phone number",
+                                textAlign: TextAlign.center),
+                            content: ChangeSendPhoneOtp(),
+                          );
+                        },
+                      );
                     },
                     child: Center(
                       child: Text(
@@ -167,7 +189,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   height: 30,
                   color: AppTheme.redColor,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog<void>(
+                        context: Helper().getContext(),
+                        builder: (BuildContext context) {
+                          return const AlertDialog(
+                            title: Text("You are about to change your password",
+                                textAlign: TextAlign.center),
+                            content: ChangePassword(),
+                          );
+                        },
+                      );
+                    },
                     child: Center(
                       child: Text(
                         "Change Password",
@@ -247,4 +280,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+}
+
+validateOtp({required action, required value}) {
+  showDialog<void>(
+    context: Helper().getContext(),
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Enter OTP to continue", textAlign: TextAlign.center),
+        content: ChangeEnterOtp(action: action, value: value),
+      );
+    },
+  );
 }

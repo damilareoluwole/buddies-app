@@ -33,6 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void initState() {
     requestErrors = null;
+    ApiClient().getInterests();
     super.initState();
   }
 
@@ -93,7 +94,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Column(
                         children: [
                           TextFieldWidget(
-                            hasIcon: true,
                             hintText: "Name",
                             controller: nameController,
                             validator: (value) {
@@ -102,7 +102,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           checkRequestErrors('name'),
                           TextFieldWidget(
-                            hasIcon: true,
                             hintText: "Email",
                             validator: (value) {
                               return Validator().validateEmail(value);
@@ -112,7 +111,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           checkRequestErrors('email'),
                           TextFieldWidget(
-                            hasIcon: true,
                             hintText: "Phone Number",
                             validator: (value) {
                               return Validator().validatePhone(value);
@@ -169,7 +167,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: Helper().getHeight(10),
                     ),
                     (processing)
-                        ? const CircularProgressIndicator()
+                        ? Helper().circularProgressIndicator()
                         : buttonWidget(
                             text: "Sign Up",
                             onPressed: () {
@@ -239,8 +237,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         "interests": selectedInterestIds
       };
 
-      debugPrint(userData.toString());
-
       try {
         var response =
             await ApiClient().httpPostRequest(ApiEndpoints.signUp, userData);
@@ -249,9 +245,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           processing = false;
         });
 
-        if (response["status"] == true &&
-            response["data"] != null &&
-            response["data"]["user"] != null) {
+        if (response["status"] == true && response["data"] != null) {
           userId = response["data"]["user"]["id"];
           NavigationService.instance.navigateTo(Routes.verifyOtp);
         } else {

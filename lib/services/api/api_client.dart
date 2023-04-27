@@ -23,7 +23,6 @@ class ApiClient {
           data: userData, //REQUEST BODY
           options: Options(headers: _header()));
       //returns the successful json object
-
       return _response(response);
     } on DioError catch (e) {
       //returns the error object if there is

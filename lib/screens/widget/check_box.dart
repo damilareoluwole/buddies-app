@@ -38,6 +38,7 @@ class _CheckBoxState extends State<CheckBox> {
     }
 
     return InkWell(
+      excludeFromSemantics: true,
       child: Row(
         children: [
           Transform.scale(

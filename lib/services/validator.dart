@@ -55,4 +55,32 @@ class Validator {
 
     return null;
   }
+
+  String? validateOpt(String? otp) {
+    if (otp == null || otp.isEmpty) {
+      return 'Please enter the OTP sent to you';
+    }
+
+    if (otp.length != 4) {
+      return 'OTP must be 4 digits';
+    }
+
+    return null;
+  }
+
+  String? validateConfirmPassword(String? password, String? confirmPassword) {
+    if (confirmPassword == null || confirmPassword.isEmpty) {
+      return 'Please confirm password';
+    }
+
+    if (confirmPassword.length < 6) {
+      return 'Password can not be less than 6 characters';
+    }
+
+    if (confirmPassword != password) {
+      return 'Password does not match';
+    }
+
+    return null;
+  }
 }

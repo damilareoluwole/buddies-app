@@ -103,7 +103,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                     '●',
                     style: AppTheme.callout,
                   ),
-                  animationDuration: const Duration(milliseconds: 300),
+                  animationDuration: const Duration(milliseconds: 900),
                   enableActiveFill: true,
                   controller: codeController,
                   onChanged: (value) {
@@ -128,7 +128,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                     )),
                     WidgetSpan(
                       child: (isProcessingResend)
-                          ? const CircularProgressIndicator()
+                          ? Helper().circularProgressIndicator()
                           : TimerButton(
                               durration: 20,
                               child: InkWell(
@@ -153,7 +153,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                 height: 24,
               ),
               (processing)
-                  ? const CircularProgressIndicator()
+                  ? Helper().circularProgressIndicator()
                   : buttonWidget(
                       text: "Verify",
                       onPressed: () {
@@ -188,9 +188,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
           processing = false;
         });
 
-        if (response["status"] == true &&
-            response["data"] != null &&
-            response["data"]["user"] != null) {
+        if (response["status"] == true && response["data"] != null) {
           userId = response["data"]["user"]["id"];
           _showModal();
         } else {

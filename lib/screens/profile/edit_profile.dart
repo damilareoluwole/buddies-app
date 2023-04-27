@@ -124,8 +124,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               checkRequestErrors('address'),
               SizedBox(height: 12),
               (processing)
-                  ? const Center(
-                      child: CircularProgressIndicator(),
+                  ? Center(
+                      child: Helper().circularProgressIndicator(),
                     )
                   : buttonWidget(
                       text: 'Save Changes',

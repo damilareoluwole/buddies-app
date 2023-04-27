@@ -95,7 +95,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
               height: 40,
             ),
             (processing)
-                ? const CircularProgressIndicator()
+                ? Helper().circularProgressIndicator()
                 : buttonWidget(
                     text: "Confirm",
                     onPressed: () {

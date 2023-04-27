@@ -71,7 +71,6 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
         controller: widget.controller,
         obscureText: _obscureText,
         cursorColor: AppTheme.blackColor,
-
         decoration: InputDecoration(
           isDense: true,
           contentPadding: widget.contentPadding ??
@@ -112,10 +111,9 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                           "assets/icons/password_hidden.svg"),
                 )
               : (widget.hasIcon == true)
-                  ? textFieldSvgIconFormatter("assets/icons/check.svg")
+                  ? null //textFieldSvgIconFormatter("assets/icons/check.svg")
                   : null,
         ),
-
         keyboardType: widget.keyboardType,
         inputFormatters: widget.inputFormatters,
         autofocus: widget.autoFocus,

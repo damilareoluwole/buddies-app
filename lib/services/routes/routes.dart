@@ -1,3 +1,4 @@
+import 'package:buddies/screens/auth/password/forgot_password.dart';
 import 'package:flutter/material.dart';
 import 'package:buddies/screens/auth/login.dart';
 import 'package:buddies/screens/auth/logout.dart';
@@ -21,6 +22,7 @@ Map<String, WidgetBuilder> routes() {
     Routes.editProfile: (context) => const EditProfileScreen(),
     Routes.logout: (context) => const LogoutScreen(),
     Routes.settings: (context) => const SettingsScreen(),
+    Routes.forgotPassword: (context) => const ForgotPasswordScreen(),
   };
 }
 
@@ -42,4 +44,5 @@ class Routes {
   static const logout = 'logout';
   static const editProfile = 'editProfile';
   static const settings = 'settings';
+  static const forgotPassword = 'forgotPassword';
 }

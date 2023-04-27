@@ -12,5 +12,9 @@ class ApiEndpoints {
   static var sendPhoneOtp = "user/change/phone";
   static var changePhone = "user/change/phone/complete";
   static var changeEmail = "user/change/email/complete";
+  static var resetSendOtp = "";
+  static var resetInitiate = "auth/reset/password/initiate";
+  static var resetValidate = "auth/reset/password/validate";
+  static var changePassword = "user/change/password";
 
 }

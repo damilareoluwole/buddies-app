@@ -23,10 +23,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _loginFormKey = GlobalKey<FormState>();
-  final phoneController = TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   bool processing = false;
-  var tAndC = false;
+  var rememberMe = false;
 
   @override
   void initState() {
@@ -82,14 +82,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       TextFieldWidget(
                         hasIcon: true,
-                        hintText: "Phone",
+                        hintText: "Phone/Email",
                         validator: (value) {
-                          return Validator().validatePhone(value);
+                          var phone = Validator().validatePhone(value);
+                          var email = Validator().validateEmail(value);
+                          if (phone == null) {
+                            return null;
+                          } else if (email == null) {
+                            return null;
+                          } else {
+                            return 'Invalid phone or email';
+                          }
                         },
-                        keyboardType: TextInputType.phone,
-                        controller: phoneController,
+                        controller: usernameController,
                       ),
-                      checkRequestErrors('phone'),
+                      checkRequestErrors('username'),
                       SizedBox(
                         height: Helper().getHeight(10),
                       ),
@@ -106,18 +113,41 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         height: Helper().getHeight(10),
                       ),
-                      CheckBox(
-                        initial: tAndC,
-                        text: 'Remember Me',
-                        onChanged: (value) {
-                          tAndC = value;
-                        },
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CheckBox(
+                              initial: rememberMe,
+                              text: 'Remember Me',
+                              onChanged: (value) {
+                                rememberMe = value;
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: InkWell(
+                                excludeFromSemantics: true,
+                                child: Text(
+                                  'Forgot password?',
+                                  style: AppTheme.caption2
+                                      .copyWith(color: HexColor('##4D4D4D')),
+                                ),
+                                onTap: () {
+                                  NavigationService.instance
+                                      .navigateTo(Routes.forgotPassword);
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: Helper().getHeight(70),
                       ),
                       (processing)
-                          ? const CircularProgressIndicator()
+                          ? Helper().circularProgressIndicator()
                           : buttonWidget(
                               text: "Sign in",
                               onPressed: () {
@@ -180,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       var loginData = {
-        "phone": phoneController.text,
+        "username": usernameController.text,
         "password": passwordController.text
       };
 
@@ -192,9 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
           processing = false;
         });
 
-        if (response["status"] == true &&
-            response["data"] != null &&
-            response["data"]["user"] != null) {
+        if (response["status"] == true && response["data"] != null) {
           userId = response["data"]["user"]["id"];
           authUserToken = response["data"]["authorization"]["token"];
           user = User.fromJson(response["data"]["user"]);

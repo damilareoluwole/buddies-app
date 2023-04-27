@@ -72,4 +72,19 @@ class Helper {
       ),
     );
   }
+
+  Widget circularProgressIndicator() {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: SizedBox(
+        height: 16,
+        width: 16,
+        child: Center(
+          child: CircularProgressIndicator(
+            color: AppTheme.redColor,
+          ),
+        ),
+      ),
+    );
+  }
 }
